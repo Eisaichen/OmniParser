@@ -79,6 +79,8 @@ def setup_state(state):
         state["openai_api_key"] = os.getenv("OPENAI_API_KEY", "")
     if "anthropic_api_key" not in state:
         state["anthropic_api_key"] = os.getenv("ANTHROPIC_API_KEY", "")
+    if "google_api_key" not in state:
+        state["google_api_key"] = os.getenv("GOOGLE_API_KEY", "")
     if "api_key" not in state:
         state["api_key"] = ""
     if "auth_validated" not in state:
@@ -527,7 +529,7 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
             with gr.Column():
                 model = gr.Dropdown(
                     label="Model",
-                    choices=["omniparser + gpt-4o", "omniparser + o1", "omniparser + o3-mini", "omniparser + R1", "omniparser + qwen2.5vl", "claude-3-5-sonnet-20241022", "omniparser + gpt-4o-orchestrated", "omniparser + o1-orchestrated", "omniparser + o3-mini-orchestrated", "omniparser + R1-orchestrated", "omniparser + qwen2.5vl-orchestrated"],
+                    choices=["omniparser + gpt-4o", "omniparser + o1", "omniparser + o3-mini", "omniparser + R1", "omniparser + qwen2.5vl", "claude-3-5-sonnet-20241022", "omniparser + gemini-flash-2.0", "omniparser + gemini-pro-2.5", "omniparser + gpt-4o-orchestrated", "omniparser + o1-orchestrated", "omniparser + o3-mini-orchestrated", "omniparser + R1-orchestrated", "omniparser + qwen2.5vl-orchestrated", "omniparser + gemini-flash-2.0-orchestrated", "omniparser + gemini-pro-2.5-orchestrated"],
                     value="omniparser + gpt-4o-orchestrated",
                     interactive=True,
                     container=True
@@ -628,6 +630,8 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
             provider_choices = ["groq"]
         elif model_selection == "omniparser + qwen2.5vl":
             provider_choices = ["dashscope"]
+        elif model_selection in set(["omniparser + gemini-flash-2.0", "omniparser + gemini-pro-2.5", "omniparser + gemini-flash-2.0-orchestrated", "omniparser + gemini-pro-2.5-orchestrated"]):
+            provider_choices = ["google"]
         else:
             provider_choices = [option.value for option in APIProvider]
         default_provider_value = provider_choices[0]

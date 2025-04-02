@@ -49,6 +49,10 @@ class VLMAgent:
             self.model = "o1"
         elif model == "omniparser + o3-mini":
             self.model = "o3-mini"
+        elif model == "omniparser + gemini-flash-2.0":
+            self.model = "gemini-2.0-flash-exp"
+        elif model == "omniparser + gemini-pro-2.5":
+            self.model = "gemini-2.5-pro-exp-03-25"
         else:
             raise ValueError(f"Model {model} not supported")
         
@@ -133,6 +137,19 @@ class VLMAgent:
             print(f"qwen token usage: {token_usage}")
             self.total_token_usage += token_usage
             self.total_cost += (token_usage * 2.2 / 1000000)  # https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.74b04823CGnPv7#fe96cfb1a422a
+        elif "gemini" in self.model:
+            vlm_response, token_usage = run_oai_interleaved(
+                messages=planner_messages,
+                system=system,
+                model_name=self.model,
+                api_key=self.api_key,
+                max_tokens=min(2048, self.max_tokens),
+                provider_base_url="https://generativelanguage.googleapis.com/v1beta/openai",
+                temperature=0,
+            )
+            print(f"gemini token usage: {token_usage}")
+            self.total_token_usage += token_usage
+            self.total_cost += (token_usage * 0.025 / 1000000)  # https://ai.google.dev/gemini-api/docs/pricing
         else:
             raise ValueError(f"Model {self.model} not supported")
         latency_vlm = time.time() - start

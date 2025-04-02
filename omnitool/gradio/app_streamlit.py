@@ -57,6 +57,8 @@ def initialize_session_state():
         st.session_state.api_key = os.getenv("OPENAI_API_KEY", "")
     if "anthropic_api_key" not in st.session_state:
         st.session_state.anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "")
+    if "google_api_key" not in st.session_state:
+        st.session_state.google_api_key = os.getenv("GOOGLE_API_KEY", "")
     if "only_n_most_recent_images" not in st.session_state:
         st.session_state.only_n_most_recent_images = 2
     if "responses" not in st.session_state:
@@ -255,9 +257,11 @@ def main():
             "Model",
             ["omniparser + gpt-4o", "omniparser + o1", "omniparser + o3-mini", 
              "omniparser + R1", "omniparser + qwen2.5vl", "claude-3-5-sonnet-20241022",
+             "omniparser + gemini-flash-2.0", "omniparser + gemini-pro-2.5",
              "omniparser + gpt-4o-orchestrated", "omniparser + o1-orchestrated",
              "omniparser + o3-mini-orchestrated", "omniparser + R1-orchestrated",
-             "omniparser + qwen2.5vl-orchestrated"],
+             "omniparser + qwen2.5vl-orchestrated",
+             "omniparser + gemini-flash-2.0-orchestrated", "omniparser + gemini-pro-2.5-orchestrated"],
             index=6
         )
         st.session_state.model = model
